@@ -1,8 +1,8 @@
-import * as functions from 'firebase-functions';
-const {WebhookClient} = require('dialogflow-fulfillment');
-const {Card, Suggestion} = require('dialogflow-fulfillment');
+import { dialogflow } from "actions-on-google";
+import functions = require('firebase-functions');
 
 import { DefaultIntents } from './intents/default';
+import { LoginIntents } from './intents/login';
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -11,16 +11,11 @@ import { DefaultIntents } from './intents/default';
 //  response.send("Hello from Firebase!");
 // });
 
+const app = dialogflow({debug: true});
 
-exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
-    const agent = new WebhookClient({ request, response });
-    console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
-    console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
+app.intent('Default Welcome Intent', DefaultIntents.welcome);
+app.intent('Default Fallback Intent', DefaultIntents.welcome);
+app.intent('ask_for_sign_in', LoginIntents.AskForSignIn);
+app.intent('Get Signin', LoginIntents.GetSignin);
 
-    const intentMap = new Map();
-    intentMap.set('Default Welcome Intent', DefaultIntents.welcome);
-    intentMap.set('Default Fallback Intent', DefaultIntents.welcome);
-    // intentMap.set('your intent name here', yourFunctionHandler);
-    // intentMap.set('your intent name here', googleAssistantHandler);
-    agent.handleRequest(intentMap);
-});
+exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);

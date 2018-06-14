@@ -1,8 +1,9 @@
+import { SignIn } from "actions-on-google";
 
 export class DefaultIntents {
 
     public static welcome(agent: any) {
-        agent.add(`Bienvenue chez UGC! Quel film voudriez-vous voir ?`);
+        agent.add(`Bienvenue chez UGC!`);
     }
 
     public static fallback(agent:any) {
