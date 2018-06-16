@@ -1,8 +1,8 @@
-import { SignIn, Permission, Conversation } from "actions-on-google";
+import { SignIn, Permission, Conversation, GoogleActionsV2SignInValue } from "actions-on-google";
 
 export class LoginIntents {
 
-    public static AskForSignIn(conv: any) {
+    public static AskForSignIn(conv: Conversation<any>): void {
         conv.ask(new SignIn());
         // conv.ask(new Permission({
         //     context: 'Hi there, to get to know you better',
@@ -10,7 +10,7 @@ export class LoginIntents {
         //   }));
     }
 
-    public static GetSignin(conv: any, params, signin) {
+    public static GetSignin(conv: Conversation<any>, params: any, signin: GoogleActionsV2SignInValue): void {
         if (signin.status === 'OK') {
         const access = conv.user.access.token // possibly do something with access token
         conv.ask('Great, thanks for signing in! What do you want to do next?')
